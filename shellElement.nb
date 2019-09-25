@@ -1,0 +1,472 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     15479,        464]
+NotebookOptionsPosition[     14961,        447]
+NotebookOutlinePosition[     15299,        462]
+CellTagsIndexPosition[     15256,        459]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[{
+ RowBox[{"<<", "AceGEN`"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"<<", "NDSolve`FEM`"}], "\[IndentingNewLine]"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"SMSInitialize", "[", 
+    RowBox[{"\"\<Shell-S2S\>\"", ",", 
+     RowBox[{"\"\<Environment\>\"", "\[Rule]", "\"\<AceFEM\>\""}]}], "]"}], 
+   ";"}], "\n"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"SMSTemplate", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"\"\<SMSTopology\>\"", "\[Rule]", "\"\<S2S\>\""}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"\"\<SMSNodeID\>\"", "\[Rule]", "\"\<DFi\>\""}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"\"\<SMSDOFGlobal\>\"", "\[Rule]", "6"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"\"\<SMSDefaultIntegrationCode\>\"", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"22", ",", "22", ",", "21"}], "}"}]}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"\"\<SMSDomainDataNames\>\"", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"\"\<E\>\"", ",", "\"\<\[Nu]\>\"", ",", "\"\<h\>\""}], "}"}]}],
+      ",", "\[IndentingNewLine]", 
+     RowBox[{"\"\<SMSDefaultData\>\"", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"20000", ",", "0.3", ",", "0.001"}], "}"}]}]}], 
+    "\[IndentingNewLine]", "]"}], ";"}], "\n"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"SMSStandardModule", "[", "\"\<Tangent and residual\>\"", "]"}], 
+   ";"}], "\[IndentingNewLine]"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"Em", ",", " ", "\[Nu]", ",", " ", "h"}], "}"}], "\[RightTee]", 
+    RowBox[{"SMSReal", "@", 
+     RowBox[{"SMSIO", "[", "\"\<All domain data\>\"", "]"}]}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"XIO", "\[RightTee]", 
+   RowBox[{"SMSReal", "@", 
+    RowBox[{"SMSIO", "[", "\"\<All coordinates\>\"", "]"}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"peIO", "\[RightTee]", 
+   RowBox[{"SMSReal", "@", 
+    RowBox[{"SMSIO", "[", "\"\<All DOFs\>\"", "]"}]}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"pe", "=", 
+    RowBox[{"Flatten", "[", "peIO", "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"uIO", "=", 
+   RowBox[{"peIO", "[", 
+    RowBox[{"[", 
+     RowBox[{"All", ",", 
+      RowBox[{"{", 
+       RowBox[{"1", ",", "2", ",", "3"}], "}"}]}], "]"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"\[Phi]IO", "=", 
+    RowBox[{"peIO", "[", 
+     RowBox[{"[", 
+      RowBox[{"All", ",", 
+       RowBox[{"{", 
+        RowBox[{"4", ",", "5", ",", "6"}], "}"}]}], "]"}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"SMSDo", "[", 
+   RowBox[{"Ig", ",", "1", ",", 
+    RowBox[{"SMSInteger", "@", 
+     RowBox[{"SMSIO", "[", "\"\<No. integration points\>\"", "]"}]}]}], "]"}],
+   ";"}], "\n", 
+ RowBox[{"\t", 
+  RowBox[{
+   RowBox[{"\[CapitalXi]", "=", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"\[Xi]", ",", "\[Eta]", ",", "\[Zeta]"}], "}"}], "\[RightTee]", 
+     
+     RowBox[{"SMSReal", "@", 
+      RowBox[{"SMSIO", "[", 
+       RowBox[{"\"\<Integration point\>\"", ",", " ", 
+        StyleBox["Ig",
+         FontSlant->"Italic"]}], "]"}]}]}]}], ";"}]}], "\[IndentingNewLine]", 
+
+ RowBox[{"\t", 
+  RowBox[{
+   RowBox[{"wgp", "\[RightTee]", 
+    RowBox[{"SMSReal", "@", 
+     RowBox[{"SMSIO", "[", 
+      RowBox[{"\"\<Integration weight\>\"", ",", " ", 
+       StyleBox["Ig",
+        FontSlant->"Italic"]}], "]"}]}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\n", 
+ RowBox[{"\t", 
+  RowBox[{
+   RowBox[{"Ni", "\[DoubleRightTee]", 
+    RowBox[{
+     RowBox[{"ElementShapeFunction", "[", 
+      RowBox[{"QuadElement", ",", "2"}], "]"}], "[", 
+     RowBox[{"\[Xi]", ",", "\[Eta]"}], "]"}]}], ";"}]}], "\n", 
+ RowBox[{"\t", 
+  RowBox[{
+   RowBox[{"XM", "\[DoubleRightTee]", 
+    RowBox[{"Ni", ".", "XIO"}]}], ";"}]}], "\[IndentingNewLine]", 
+ RowBox[{"\t", 
+  RowBox[{
+   RowBox[{"uM", "\[DoubleRightTee]", 
+    RowBox[{"Ni", ".", "uIO"}]}], ";"}]}], "\[IndentingNewLine]", 
+ RowBox[{"\t", 
+  RowBox[{
+   RowBox[{"\[Phi]", "\[DoubleRightTee]", 
+    RowBox[{"Ni", ".", "\[Phi]IO"}]}], ";"}], "\n"}], "\[IndentingNewLine]", 
+ RowBox[{"\t", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"G\[Xi]", ",", "G\[Eta]"}], "}"}], "\[DoubleRightTee]", 
+    RowBox[{
+     RowBox[{"SMSD", "[", 
+      RowBox[{"XM", ",", 
+       RowBox[{"{", 
+        RowBox[{"\[Xi]", ",", "\[Eta]"}], "}"}]}], "]"}], "\[Transpose]"}]}], 
+   ";"}]}], "\[IndentingNewLine]", 
+ RowBox[{"\t", 
+  RowBox[{
+   RowBox[{"N\[Zeta]", "=", 
+    RowBox[{"G\[Xi]", "\[Cross]", "G\[Eta]"}]}], ";"}], 
+  "\n"}], "\[IndentingNewLine]", 
+ RowBox[{"\t", 
+  RowBox[{
+   RowBox[{"El3", "\[DoubleRightTee]", 
+    RowBox[{"N\[Zeta]", "/", 
+     RowBox[{"SMSSqrt", "[", 
+      RowBox[{"N\[Zeta]", ".", "N\[Zeta]"}], "]"}]}]}], 
+   ";"}]}], "\[IndentingNewLine]", 
+ RowBox[{"\t", 
+  RowBox[{
+   RowBox[{"El1", "\[DoubleRightTee]", 
+    RowBox[{"G\[Xi]", "/", 
+     RowBox[{"SMSSqrt", "[", 
+      RowBox[{"G\[Xi]", ".", "G\[Xi]"}], "]"}]}]}], 
+   ";"}]}], "\[IndentingNewLine]", 
+ RowBox[{"\t", 
+  RowBox[{
+   RowBox[{"El2", "\[DoubleRightTee]", 
+    RowBox[{"El3", "\[Cross]", "El1"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\n", 
+ RowBox[{"\t", 
+  RowBox[{
+   RowBox[{"T", "\[DoubleRightTee]", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"El1", ",", "El2", ",", "El3"}], "}"}], "\[Transpose]"}]}], 
+   ";"}]}], "\n", 
+ RowBox[{"\t", 
+  RowBox[{
+   RowBox[{"X", "\[DoubleRightTee]", 
+    RowBox[{"XM", "+", 
+     RowBox[{
+      RowBox[{"h", "/", "2"}], "\[Zeta]", " ", "El3"}]}]}], ";"}]}], "\n", 
+ RowBox[{"\t", 
+  RowBox[{
+   RowBox[{"J", "\[DoubleRightTee]", 
+    RowBox[{"SMSD", "[", 
+     RowBox[{"X", ",", "\[CapitalXi]"}], "]"}]}], 
+   ";"}]}], "\[IndentingNewLine]", 
+ RowBox[{"\t", 
+  RowBox[{
+   RowBox[{"Jd", "\[DoubleRightTee]", 
+    RowBox[{"Det", "[", "J", "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"\t", 
+  RowBox[{
+   RowBox[{"R", "\[DoubleRightTee]", 
+    RowBox[{"RollPitchYawMatrix", "[", "\[Phi]", "]"}]}], 
+   ";"}]}], "\[IndentingNewLine]", 
+ RowBox[{"\t", 
+  RowBox[{
+   RowBox[{"d", "\[DoubleRightTee]", 
+    RowBox[{"R", ".", "El3"}]}], ";"}], "\[IndentingNewLine]"}], "\n", 
+ RowBox[{"\t", 
+  RowBox[{
+   RowBox[{"Ft", "\[DoubleRightTee]", 
+    RowBox[{
+     RowBox[{"SMSD", "[", 
+      RowBox[{
+       RowBox[{"XM", "+", "uM", "+", 
+        RowBox[{
+         RowBox[{"h", "/", "2"}], "\[Zeta]", " ", "d"}]}], ",", 
+       "\[CapitalXi]"}], "]"}], ".", 
+     RowBox[{"SMSInverse", "[", "J", "]"}], ".", "T"}]}], ";"}]}], "\n", 
+ RowBox[{"\t", 
+  RowBox[{
+   RowBox[{"Et", "\[DoubleRightTee]", 
+    RowBox[{
+     RowBox[{"1", "/", "2"}], 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Ft", "\[Transpose]"}], ".", "Ft"}], "-", 
+       RowBox[{"IdentityMatrix", "[", "3", "]"}]}], ")"}]}]}], 
+   ";"}]}], "\[IndentingNewLine]", 
+ RowBox[{"\t", 
+  RowBox[{
+   RowBox[{"Clear", "[", "E33", "]"}], ";"}]}], "\[IndentingNewLine]", 
+ RowBox[{"\t", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Et", "[", 
+     RowBox[{"[", 
+      RowBox[{"3", ",", "3"}], "]"}], "]"}], "=", "E33"}], ";"}], 
+  "\[IndentingNewLine]"}], "\n", 
+ RowBox[{"\t", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"\[Lambda]", ",", "\[Mu]"}], "}"}], "\[DoubleRightTee]", 
+    RowBox[{"SMSHookeToLame", "[", 
+     RowBox[{"Em", ",", "\[Nu]"}], "]"}]}], ";"}]}], "\n", 
+ RowBox[{"\t", 
+  RowBox[{
+   RowBox[{"St", "=", 
+    RowBox[{
+     RowBox[{"\[Lambda]", " ", 
+      RowBox[{"Tr", "[", "Et", "]"}], 
+      RowBox[{"IdentityMatrix", "[", "3", "]"}]}], "+", 
+     RowBox[{"2", "\[Mu]", " ", "Et"}]}]}], ";"}]}], "\[IndentingNewLine]", 
+ RowBox[{"\t", 
+  RowBox[{
+   RowBox[{"\[Sigma]cond", "=", 
+    RowBox[{"First", "@", 
+     RowBox[{"Solve", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"St", "[", 
+         RowBox[{"[", 
+          RowBox[{"3", ",", "3"}], "]"}], "]"}], "\[Equal]", "0"}], ",", 
+       "E33"}], "]"}]}]}], ";"}], "\n"}], "\[IndentingNewLine]", 
+ RowBox[{"\t", 
+  RowBox[{
+   RowBox[{"Wshell", "\[DoubleRightTee]", 
+    RowBox[{"Simplify", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{
+        RowBox[{"1", "/", "2"}], "\[Lambda]", " ", 
+        SuperscriptBox[
+         RowBox[{"Tr", "[", "Et", "]"}], "2"]}], "+", 
+       RowBox[{"\[Mu]", " ", 
+        RowBox[{"Tr", "[", 
+         RowBox[{"Et", ".", "Et"}], "]"}]}]}], "/.", "\[Sigma]cond"}], 
+     "]"}]}], ";"}]}], "\n", 
+ RowBox[{"\t", 
+  RowBox[{
+   RowBox[{"Q", "\[DoubleRightTee]", 
+    RowBox[{
+     RowBox[{"T", "\[Transpose]"}], ".", 
+     RowBox[{"R", "\[Transpose]"}], ".", "Ft"}]}], 
+   ";"}]}], "\[IndentingNewLine]", 
+ RowBox[{"\t", 
+  RowBox[{
+   RowBox[{"Wdrill", "\[DoubleRightTee]", 
+    RowBox[{
+     RowBox[{"1", "/", "2"}], " ", "Em", " ", 
+     SuperscriptBox["h", "3"], 
+     SuperscriptBox[
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"Q", "[", 
+         RowBox[{"[", 
+          RowBox[{"1", ",", "2"}], "]"}], "]"}], "-", 
+        RowBox[{"Q", "[", 
+         RowBox[{"[", 
+          RowBox[{"2", ",", "1"}], "]"}], "]"}]}], ")"}], "2"]}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\n", 
+ RowBox[{"\t", 
+  RowBox[{
+   RowBox[{"SMSDo", "[", 
+    RowBox[{"m", ",", "1", ",", "SMSNoDOFGlobal"}], "]"}], ";"}], 
+  "\n"}], "\[IndentingNewLine]", 
+ RowBox[{"\t\t", 
+  RowBox[{
+   RowBox[{"Rgm", "\[DoubleRightTee]", 
+    RowBox[{"Jd", " ", 
+     RowBox[{"SMSD", "[", 
+      RowBox[{
+       RowBox[{"Wshell", "+", "Wdrill"}], ",", "pe", ",", "m"}], "]"}]}]}], 
+   ";"}]}], "\n", 
+ RowBox[{"\t\t", 
+  RowBox[{
+   RowBox[{"SMSIO", "[", 
+    RowBox[{
+     RowBox[{"wgp", " ", "Rgm"}], ",", "\"\<Add to\>\"", ",", 
+     RowBox[{"\"\<Residual\>\"", "[", "m", "]"}]}], "]"}], ";"}], "\t\t", 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"\t\t", 
+  RowBox[{
+   RowBox[{"SMSDo", "[", 
+    RowBox[{"n", ",", "m", ",", "SMSNoDOFGlobal"}], "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\n", 
+ RowBox[{"\t\t\t", 
+  RowBox[{
+   RowBox[{"Kgmn", "\[DoubleRightTee]", 
+    RowBox[{"SMSD", "[", 
+     RowBox[{"Rgm", ",", "pe", ",", "n"}], "]"}]}], 
+   ";"}]}], "\[IndentingNewLine]", 
+ RowBox[{"\t\t\t", 
+  RowBox[{
+   RowBox[{"SMSIO", "[", 
+    RowBox[{
+     RowBox[{"wgp", " ", "Kgmn"}], ",", "\"\<Add to\>\"", ",", 
+     RowBox[{"\"\<Tangent\>\"", "[", 
+      RowBox[{"m", ",", "n"}], "]"}]}], "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"\t\t", 
+  RowBox[{
+   RowBox[{"SMSEndDo", "[", "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"\t", 
+  RowBox[{
+   RowBox[{"SMSEndDo", "[", "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"SMSEndDo", "[", "]"}], ";"}], "\n"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"SMSWrite", "[", "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"SMTMakeDll", "[", "]"}]}], "Input",
+ CellChangeTimes->{{3.7704361136822367`*^9, 3.770436126428589*^9}, {
+   3.770437010330432*^9, 3.770437010544353*^9}, 3.770437072177163*^9, {
+   3.778392392833097*^9, 3.7783923961260433`*^9}, {3.7783924480452538`*^9, 
+   3.778392535566443*^9}, {3.7783925713482122`*^9, 3.778392611446444*^9}, {
+   3.778392670402665*^9, 3.7783927001409283`*^9}, 3.7783927485187263`*^9, {
+   3.7783928111687393`*^9, 3.778392882392185*^9}, 3.778392913662698*^9, 
+   3.7783930973422194`*^9, {3.7783931688242817`*^9, 3.7783932076780577`*^9}, {
+   3.778393245603251*^9, 3.7783934528663683`*^9}, {3.778393507881402*^9, 
+   3.7783935812239437`*^9}},
+ CellLabel->
+  "In[252]:=",ExpressionUUID->"e6a7c4b6-59a8-43df-84dc-5326a23f58dc"],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {
+     TemplateBox[{StyleBox["\"File: \"", Bold, 
+        RGBColor[0, 0, 1], StripOnInput -> False],"\"Shell-S2S.c\"",StyleBox[
+       "\"  Size: \"", Bold, 
+        RGBColor[0, 0, 1], StripOnInput -> False],"60174",StyleBox[
+       "\"  Time: \"", Bold, 
+        RGBColor[0, 0, 1], StripOnInput -> False],"16"},
+      "RowDefault"]},
+    {
+     TagBox[GridBox[{
+        {
+         StyleBox["\<\"Method\"\>",
+          StripOnInput->False,
+          LineColor->RGBColor[0, 0, 1],
+          FrontFaceColor->RGBColor[0, 0, 1],
+          BackFaceColor->RGBColor[0, 0, 1],
+          GraphicsColor->RGBColor[0, 0, 1],
+          FontWeight->Bold,
+          FontColor->RGBColor[0, 0, 1]], 
+         StyleBox["\<\"SKR\"\>",
+          StripOnInput->False,
+          LineColor->RGBColor[0, 0, 1],
+          FrontFaceColor->RGBColor[0, 0, 1],
+          BackFaceColor->RGBColor[0, 0, 1],
+          GraphicsColor->RGBColor[0, 0, 1],
+          FontColor->RGBColor[0, 0, 1]]},
+        {
+         StyleBox["\<\"No.Formulae\"\>",
+          StripOnInput->False,
+          LineColor->RGBColor[0, 0, 1],
+          FrontFaceColor->RGBColor[0, 0, 1],
+          BackFaceColor->RGBColor[0, 0, 1],
+          GraphicsColor->RGBColor[0, 0, 1],
+          FontWeight->Bold,
+          FontColor->RGBColor[0, 0, 1]], "732"},
+        {
+         StyleBox["\<\"No.Leafs\"\>",
+          StripOnInput->False,
+          LineColor->RGBColor[0, 0, 1],
+          FrontFaceColor->RGBColor[0, 0, 1],
+          BackFaceColor->RGBColor[0, 0, 1],
+          GraphicsColor->RGBColor[0, 0, 1],
+          FontWeight->Bold,
+          FontColor->RGBColor[0, 0, 1]], "17745"}
+       },
+       AutoDelete->False,
+       GridBoxAlignment->{"Columns" -> {{Left}}, "Rows" -> {{Center}}},
+       GridBoxDividers->{"Columns" -> {True, True}},
+       GridBoxFrame->{"ColumnsIndexed" -> {{{1, -1}, {1, -1}} -> True}},
+       GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+      "Grid"]}
+   },
+   DefaultBaseStyle->"Column",
+   GridBoxAlignment->{"Columns" -> {{Left}}},
+   GridBoxDividers->{"Rows" -> {True, True}},
+   GridBoxFrame->{"Columns" -> False, "Rows" -> False},
+   GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+  "Column"]], "Print",
+ CellChangeTimes->{3.77839360540178*^9},
+ CellLabel->
+  "During evaluation of \
+In[252]:=",ExpressionUUID->"961d6107-7b46-4643-a069-51055f23915a"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"\<\"/Users/jantomec/Documents/Sola/FS-UNI-II/zakljucna_naloga/\
+staro/racunskiPrimer/Shell-S2S.M64.dll\"\>", ",", "\<\"Shell-S2S\"\>", ",", 
+   "0"}], "}"}]], "Output",
+ CellChangeTimes->{3.778393606595377*^9},
+ CellLabel->
+  "Out[301]=",ExpressionUUID->"588caa3a-5c75-4e8f-a59b-9b49a80c9d27"]
+}, Open  ]]
+},
+WindowSize->{808, 911},
+WindowMargins->{{Automatic, 324}, {32, Automatic}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 11607, 348, 1692, "Input",ExpressionUUID->"e6a7c4b6-59a8-43df-84dc-5326a23f58dc"],
+Cell[12190, 372, 2419, 63, 86, "Print",ExpressionUUID->"961d6107-7b46-4643-a069-51055f23915a"],
+Cell[14612, 437, 333, 7, 56, "Output",ExpressionUUID->"588caa3a-5c75-4e8f-a59b-9b49a80c9d27"]
+}, Open  ]]
+}
+]
+*)
+

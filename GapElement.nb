@@ -1,0 +1,188 @@
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[         0,          0]
+NotebookDataLength[      6206,        187]
+NotebookOptionsPosition[      5755,        167]
+NotebookOutlinePosition[      6094,        182]
+CellTagsIndexPosition[      6051,        179]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[{
+ RowBox[{"<<", "MeshTools`"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"<<", "AceGEN`"}], "\[IndentingNewLine]"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"SMSInitialize", "[", 
+    RowBox[{"\"\<GapElement\>\"", ",", 
+     RowBox[{"\"\<Environment\>\"", "\[Rule]", "\"\<AceFEM\>\""}]}], "]"}], 
+   ";"}], "\[IndentingNewLine]"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"SMSTemplate", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"\"\<SMSTopology\>\"", "\[Rule]", "\"\<C1\>\""}], " ", ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"\"\<SMSNoNodes\>\"", "\[Rule]", "3"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"\"\<SMSDOFGlobal\>\"", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"3", ",", "3", ",", "1"}], "}"}]}], ",", "\[IndentingNewLine]", 
+     RowBox[{"\"\<SMSDefaultIntegrationCode\>\"", "\[Rule]", "0"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"\"\<SMSAdditionalNodes\>\"", "\[Rule]", 
+      RowBox[{"Hold", "[", 
+       RowBox[{
+        RowBox[{"{", "Null", "}"}], "&"}], "]"}]}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"\"\<SMSNodeID\>\"", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{
+       "\"\<D\>\"", ",", "\"\<D\>\"", ",", "\"\<Lagrange -LP -L\>\""}], 
+       "}"}]}], ",", "\[IndentingNewLine]", 
+     RowBox[{"\"\<SMSDomainDataNames\>\"", "\[Rule]", 
+      RowBox[{"{", "\"\<k -spring constant\>\"", "}"}]}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"\"\<SMSDefaultData\>\"", "\[Rule]", 
+      RowBox[{"{", "1", "}"}]}]}], "\[IndentingNewLine]", "]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"SMSStandardModule", "[", "\"\<Tangent and residual\>\"", "]"}], 
+   ";"}], "\[IndentingNewLine]"}], "\n", 
+ RowBox[{
+  RowBox[{"X", "\[RightTee]", 
+   RowBox[{
+    RowBox[{"SMSIO", "[", "\"\<All coordinates\>\"", "]"}], "[", 
+    RowBox[{"[", 
+     RowBox[{"{", 
+      RowBox[{"1", ",", "2"}], "}"}], "]"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"u", "\[RightTee]", 
+   RowBox[{
+    RowBox[{"SMSIO", "[", "\"\<All DOFs\>\"", "]"}], "[", 
+    RowBox[{"[", 
+     RowBox[{"{", 
+      RowBox[{"1", ",", "2"}], "}"}], "]"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[Lambda]", "\[RightTee]", 
+   RowBox[{
+    RowBox[{"SMSIO", "[", "\"\<All DOFs\>\"", "]"}], "[", 
+    RowBox[{"[", 
+     RowBox[{"3", ",", "1"}], "]"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[DoubleStruckP]", "=", 
+   RowBox[{
+    RowBox[{"SMSIO", "[", "\"\<Nodal DOFs\>\"", "]"}], "//", "Flatten"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"{", "k", "}"}], "\[RightTee]", 
+    RowBox[{"SMSIO", "[", "\"\<All domain data\>\"", "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"x", "\[DoubleRightTee]", 
+   RowBox[{"X", "+", "u"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"\[DoubleStruckN]", "\[DoubleRightTee]", 
+   RowBox[{
+    RowBox[{"X", "[", 
+     RowBox[{"[", "2", "]"}], "]"}], "-", 
+    RowBox[{"X", "[", 
+     RowBox[{"[", "1", "]"}], "]"}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[DoubleStruckT]", "\[DoubleRightTee]", 
+   RowBox[{
+    RowBox[{"x", "[", 
+     RowBox[{"[", "2", "]"}], "]"}], "-", 
+    RowBox[{"x", "[", 
+     RowBox[{"[", "1", "]"}], "]"}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"gap", "\[DoubleRightTee]", 
+    RowBox[{
+     RowBox[{"\[DoubleStruckT]", ".", "\[DoubleStruckN]"}], "*", 
+     RowBox[{"\[DoubleStruckT]", ".", "\[DoubleStruckT]"}]}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\n", 
+ RowBox[{
+  RowBox[{"constraint", "=", 
+   RowBox[{"\[Lambda]", "+", 
+    RowBox[{"k", " ", "gap"}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"\[CapitalPi]constraint", "\[DoubleRightTee]", 
+    RowBox[{"SMSIf", "[", 
+     RowBox[{
+      RowBox[{"constraint", "<", 
+       RowBox[{"-", 
+        SuperscriptBox["10", 
+         RowBox[{"-", "8"}]]}]}], ",", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"\[Lambda]", "+", 
+         RowBox[{
+          FractionBox["k", "2"], " ", "gap"}]}], ")"}], "gap"}], ",", 
+      RowBox[{
+       RowBox[{"-", 
+        FractionBox["1", 
+         RowBox[{"2", "k"}]]}], " ", 
+       SuperscriptBox["\[Lambda]", "2"]}]}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\n", 
+ RowBox[{
+  RowBox[{"\[DoubleStruckCapitalR]", "\[DoubleRightTee]", 
+   RowBox[{"SMSD", "[", 
+    RowBox[{"\[CapitalPi]constraint", ",", "\[DoubleStruckP]"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"SMSIO", "[", 
+   RowBox[{
+   "\[DoubleStruckCapitalR]", ",", "\"\<Add to\>\"", ",", 
+    "\"\<Residual\>\""}], "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[DoubleStruckCapitalK]", "=", 
+   RowBox[{"SMSD", "[", 
+    RowBox[{"\[DoubleStruckCapitalR]", ",", "\[DoubleStruckP]"}], "]"}]}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{"SMSIO", "[", 
+   RowBox[{
+   "\[DoubleStruckCapitalK]", ",", "\"\<Add to\>\"", ",", "\"\<Tangent\>\""}],
+    "]"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"SMSWrite", "[", "]"}], ";"}], " "}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"SMTMakeDll", "[", "]"}], ";"}]}], "Input",
+ CellChangeTimes->{{3.7719072071963577`*^9, 3.771907237174348*^9}, {
+  3.771995989132835*^9, 3.771995990444367*^9}, {3.776431900568996*^9, 
+  3.7764319424139977`*^9}},ExpressionUUID->"c3f76f4f-0dd1-46b7-856d-\
+16931582ad29"]
+},
+WindowSize->{808, 855},
+WindowMargins->{{Automatic, 405}, {Automatic, 116}},
+FrontEndVersion->"12.0 for Mac OS X x86 (64-bit) (April 8, 2019)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[400, 13, 5351, 152, 827, "Input",ExpressionUUID->"c3f76f4f-0dd1-46b7-856d-16931582ad29"]
+}
+]
+*)
+
